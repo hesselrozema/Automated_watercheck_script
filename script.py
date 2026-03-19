@@ -63,7 +63,7 @@ print(f"🕒 Moment (NL tijd volgens CSV): {when}")
 
 max_value = int(round(max_row["waterhoogte_cm"]))
 
-if max_value > WATERGRENS_CM:
+if max_value > 75:
     account_sid = os.getenv("TWILIO_ACCOUNT_SID")
     auth_token = os.getenv("TWILIO_AUTH_TOKEN")
     if not account_sid or not auth_token:
