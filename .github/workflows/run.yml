@@ -1,9 +1,10 @@
 name: Daily Python Script
 
+
 on:
   schedule:
-    - cron: "0 6 * * *"   # 06:00 UTC, draait 07:00 in winter en 08:00 in zomer
-  workflow_dispatch:        # handmatig starten
+    - cron: "*/10 * * * *"   # draait elke 10 minuten
+  workflow_dispatch:          # handmatig starten
 
 jobs:
   run:
