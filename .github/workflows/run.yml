@@ -9,6 +9,10 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
+    
+    env:
+      TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+      TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
