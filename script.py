@@ -83,7 +83,7 @@ if max_value > 75:
         message = client.messages.create(
             body=body,
             from_="whatsapp:+14155238886",  # Twilio WhatsApp Sandbox
-            to=ontvanger_whatsapp
+            to="whatsapp:+31629227763" 
         )
         print("📲 WhatsApp-melding verzonden. SID:", message.sid)
     except Exception as e:
