@@ -1,6 +1,8 @@
 import requests
 import pandas as pd
 from io import StringIO
+import os
+from twilio.rest import Client
 
 LOCATION_CODE = "werkendam.nieuwemerwede"
 VALUES_WINDOW = "-48,48"  # laatste 48 uur tot 48 uur vooruit (exact zoals je link)
@@ -58,3 +60,34 @@ print(f"🧭 Venster: values={VALUES_WINDOW} uur (t.o.v. nu)")
 print(f"🌊 Hoogste waterhoogte (gemeten): {int(round(max_row['waterhoogte_cm']))} cm")
 print(f"🕒 Moment (NL tijd volgens CSV): {when}")
 
+
+max_value = int(round(max_row["waterhoogte_cm"]))
+
+if max_value > WATERGRENS_CM:
+    account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+    auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+    if not account_sid or not auth_token:
+        raise RuntimeError("Missing TWILIO_ACCOUNT_SID or TWILIO_AUTH_TOKEN env vars.")
+
+    client = Client(account_sid, auth_token)
+
+    body = (
+        f"⚠️ WAARSCHUWING\n"
+        f"Waterhoogte: {max_value} cm\n"
+        f"Moment (NL tijd, CSV): {when}\n"
+        f"Locatie: {max_row.get('Locatie', LOCATION_CODE)}\n\n"
+        f"(Automatische melding)"
+    )
+
+    try:
+        message = client.messages.create(
+            body=body,
+            from_="whatsapp:+14155238886",  # Twilio WhatsApp Sandbox
+            to=ontvanger_whatsapp
+        )
+        print("📲 WhatsApp-melding verzonden. SID:", message.sid)
+    except Exception as e:
+        print("❌ WhatsApp verzenden mislukt:", e)
+        raise
+else:
+    print("✅ Waterhoogte veilig — geen melding.")
