@@ -3,7 +3,7 @@ name: Daily Python Script
 
 on:
   schedule:
-    - cron: "*/10 * * * *"   # draait elke 10 minuten
+    - cron: "0 6 * * *"   # draait elke ochtend om 06:00
   workflow_dispatch:          # handmatig starten
 
 jobs:
