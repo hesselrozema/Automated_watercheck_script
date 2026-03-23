@@ -25,6 +25,7 @@ THRESHOLD_CM = int(os.getenv("THRESHOLD_CM", "75"))
 SEND_TO_NUMBERS = [
     # voorbeeld: zet hier je nummers neer
     "whatsapp:+31649549726",
+    "whatsapp:+31629227763",
 ]
 _env_to = os.getenv("SEND_TO_NUMBERS")
 if _env_to:
@@ -65,9 +66,7 @@ def fetch_max_waterhoogte(location_code: str) -> dict:
              .astype(float)
         )
 
-    df["actual_cm"] = to_num(df[COL_ACTUAL])
-    df["future_cm"] = to_num(df[COL_FUTURE])
-    df["waterhoogte_cm"] = df["actual_cm"].fillna(df["future_cm"])
+    df["waterhoogte_cm"] = to_num(df[COL_FUTURE])
 
     max_row = df.loc[df["waterhoogte_cm"].idxmax()]
 
