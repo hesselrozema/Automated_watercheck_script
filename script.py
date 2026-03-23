@@ -4,8 +4,28 @@ import pandas as pd
 from io import StringIO
 from twilio.rest import Client
 
+
 # ============================================================
-# Instelbare parameters (simpel & centraal)
+# AANPASBAAR
+# ============================================================
+# Globale threshold (voor alle locaties)
+THRESHOLD_CM = int(os.getenv("THRESHOLD_CM", "75"))
+
+# Meerdere ontvangers mogelijk (komma-gescheiden via env of hieronder als list)
+SEND_TO_NUMBERS = [
+    # voorbeeld: zet hier je nummers neer
+    "whatsapp:+31649549726",
+    "whatsapp:+31629227763",
+]
+# ============================================================
+
+_env_to = os.getenv("SEND_TO_NUMBERS")
+if _env_to:
+    SEND_TO_NUMBERS = [x.strip() for x in _env_to.split(",") if x.strip()]
+
+
+# ============================================================
+# Gegevens werkendam en dordrecht
 # ============================================================
 LOCATION_CODES = [
     "werkendam.nieuwemerwede",
@@ -17,19 +37,6 @@ LOCATION_LABELS = {
     "werkendam.nieuwemerwede": "Werkendam – Nieuwe Merwede",
     "dordrecht.oudemaas.benedenmerwede": "Dordrecht – Oude Maas/Beneden Merwede",
 }
-
-# Globale threshold (voor alle locaties)
-THRESHOLD_CM = int(os.getenv("THRESHOLD_CM", "75"))
-
-# Meerdere ontvangers mogelijk (komma-gescheiden via env of hieronder als list)
-SEND_TO_NUMBERS = [
-    # voorbeeld: zet hier je nummers neer
-    "whatsapp:+31649549726",
-    "whatsapp:+31629227763",
-]
-_env_to = os.getenv("SEND_TO_NUMBERS")
-if _env_to:
-    SEND_TO_NUMBERS = [x.strip() for x in _env_to.split(",") if x.strip()]
 
 # Window voor data (laatste 48 uur tot 48 uur vooruit)
 VALUES_WINDOW = "-48,48"
